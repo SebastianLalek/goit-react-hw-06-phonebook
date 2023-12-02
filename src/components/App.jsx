@@ -4,8 +4,14 @@ import Section from './section/section';
 import Filter from './filter/filter';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, deleteContact, filterContacts } from 'redux/contactsSlice';
+import {
+  addContact,
+  deleteContact,
+  filterContacts,
+  loadFromLoacalStorage,
+} from 'redux/contactsSlice';
 import { nanoid } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
 
 function Phonebook() {
   const contacts = useSelector(state => state.phonebook.contacts);
@@ -45,6 +51,24 @@ function Phonebook() {
   const preventSubmit = e => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    const savedContacts = localStorage.getItem('contacts');
+    const parsedContats = JSON.parse(savedContacts);
+
+    if (parsedContats === null) {
+      return;
+    }
+
+    if (parsedContats.length > 0) {
+      dispatch(loadFromLoacalStorage(parsedContats));
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   return (
     <div>

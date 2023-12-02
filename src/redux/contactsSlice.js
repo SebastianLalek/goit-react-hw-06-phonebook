@@ -38,10 +38,17 @@ const contactsSlice = createSlice({
     filterContacts(state, action) {
       state.filter = action.payload;
     },
+    loadFromLoacalStorage(state, action) {
+      state.contacts = action.payload;
+    },
   },
 });
 
 export const contactsReducer = contactsSlice.reducer;
 
-export const { addContact, deleteContact, filterContacts } =
-  contactsSlice.actions;
+export const {
+  addContact,
+  deleteContact,
+  filterContacts,
+  loadFromLoacalStorage,
+} = contactsSlice.actions;
